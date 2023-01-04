@@ -4,8 +4,7 @@ This is an OOP framework. The framework enforces a separation of data and logic.
 
 And we also separate visuals and logic. Visual include model proxy, and animation proxy, etc. And all logic can only use visual by visual command and visual proxy id.
 
-### define
-
+### Modules
 - GalaxyEntry: game framework entry
 - GCore\Base: basic game framework module
 - CommandManager: dispatch commands based on entity uid
@@ -17,10 +16,10 @@ And we also separate visuals and logic. Visual include model proxy, and animatio
 - MoldMain: it will call the mold generator to generate code based on GalaxyAttribute
 - ProcedureManager: manage the entire game flow
 - VisualProxyManager
-    1. visual manager. we use this to manage all the visual entity lifecycle
-    2. visual proxy. it works between the gameplay side and the visual entity. for example, if you create a new enemy, we need to create an enemy model and animator, they all need some time to load, so we always need to add lots of async operations into the callback. but it is tricy and we need to add some logic to handle special case. this is why we need the visual proxy. you can use the visual proxy to do your gameplay logic even though we haven't finished loaded. and all your gameplay call will be added to a queue and handle after the res loaded.
-    3. visual cmd/query is the way you can communicate with the visual layer. every time you call visual cmd, it will be added to a queue on the visual proxy. then they will be handled when the visual entity is ready.
+    1. Visual manager. we use this to manage all the visual entity lifecycle
+    2. Visual proxy. it works between the gameplay side and the visual entity. for example, if you create a new enemy, we need to create an enemy model and animator, they all need some time to load, so we always need to add lots of async operations into the callback. but it is tricy and we need to add some logic to handle special case. this is why we need the visual proxy. you can use the visual proxy to do your gameplay logic even though we haven't finished loaded. and all your gameplay call will be added to a queue and handle after the res loaded.
+    3. Visual cmd/query is the way you can communicate with the visual layer. every time you call visual cmd, it will be added to a queue on the visual proxy. then they will be handled when the visual entity is ready.
     4. For example, we want to create a shooter enemy. So we need to load the enemy model, then we need to attach the gun to the enemy's right hand. In this case, you can just create the enemy model and gun model. Then attach the gun model to the enemy's right hand. And call visual commands to set those positions, rotations, etc. The flow should be like this:
-        1. after finishing loading the enemy model, we will handle the flush queue to apply command.
-        2. then try to find out all the attached commands related to this model. in this case, will find the gun's attached command
-        3. after finishing loading the gun model, we will handle the gun's flush queue
+        1. After finishing loading the enemy model, we will handle the flush queue to apply command.
+        2. Then try to find out all the attached commands related to this model. in this case, will find the gun's attached command
+        3. After finishing loading the gun model, we will handle the gun's flush queue
